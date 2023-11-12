@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Watch Include="*.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\tools\sourcegenerators\CsvTable\CsvTable.csproj" />
+  </ItemGroup>
+
+  <Target Name="GenerateCsvTableAccessor" BeforeTargets="BeforeBuild;BeforeRebuild">
+    <Exec Command="dotnet $(BinDirectory)CsvTable.dll $(ProjectDir)WeatherData.csv $(ProjectDir)$(IntermediateOutputPath)WeatherData.csv.cs" Outputs="$(ProjectDir)$(IntermediateOutputPath)WeatherData.csv.cs" ConsoleToMsBuild="true">
+      <Output ItemName="Generated" TaskParameter="Outputs" />
+    </Exec>
+    <ItemGroup>
+      <Compile Include="@(Generated)" />
+      <FileWrites Include="@(Generated)" />
+    </ItemGroup>
+  </Target>
+</Project>
