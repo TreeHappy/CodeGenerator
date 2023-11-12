@@ -1,0 +1,12 @@
+<Project>
+  <Target Name="GenerateCsvTableAccessor" BeforeTargets="BeforeBuild;BeforeRebuild" Condition="'$(ProjectName)' == 'library'">
+    <Exec Command="dotnet $(BinDirectory)CsvTable.dll $(ProjectDir)WeatherData.csv $(ProjectDir)$(IntermediateOutputPath)WeatherData.csv.cs" Outputs="$(ProjectDir)$(IntermediateOutputPath)WeatherData.csv.cs" ConsoleToMsBuild="true">
+      <Output ItemName="Generated" TaskParameter="Outputs" />
+    </Exec>
+    <ItemGroup>
+      <Compile Include="@(Generated)" />
+      <FileWrites Include="@(Generated)" />
+    </ItemGroup>
+  </Target>
+</Project>
+
